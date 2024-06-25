@@ -23,21 +23,18 @@ func GenSaleReport(c *gin.Context) {
 	saleData := MonthlySaleData{}
 	c.ShouldBindJSON(&saleData)
 
-	var result []int
-
-	date_count := len(saleData.SlipCount)
-
 	slipTotal := 0
 	for _, num := range saleData.SlipCount {
 		slipTotal += num
 	}
 	baseTotal := int(float32(saleData.TotalAmount) * 0.6)
-	base := baseTotal / int(slipTotal)
-	remain := saleData.TotalAmount - int(baseTotal)
-	println(baseTotal, base, date_count)
+	base := nearestGreaterDivisibleByFive(baseTotal / int(slipTotal))
+	remain := saleData.TotalAmount
 
+	var result []int
 	for i := 0; i < slipTotal; i++ {
 		result = append(result, base)
+		remain = remain - base
 	}
 
 	max := int(float32(base) * 2.5)
@@ -60,8 +57,8 @@ func GenSaleReport(c *gin.Context) {
 		if remain-randomNumber > 0 {
 			result[randIndex] = result[randIndex] + randomNumber
 		} else {
-			randomNumber = remain
-			result[randIndex] = result[randIndex] + randomNumber
+			result[randIndex] = result[randIndex] + remain
+			break
 		}
 		remain = remain - randomNumber
 
@@ -133,4 +130,17 @@ func getColumnName(col int) string {
 		name[i], name[j] = name[j], name[i]
 	}
 	return string(name)
+}
+
+func nearestGreaterDivisibleByFive(n int) int {
+	// Calculate the remainder when n is divided by 5
+	remainder := n % 5
+
+	// If remainder is 0, n itself is divisible by 5, return n
+	if remainder == 0 {
+		return n
+	}
+
+	// Otherwise, calculate the nearest greater integer that is divisible by 5
+	return n + (5 - remainder)
 }

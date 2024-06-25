@@ -20,7 +20,7 @@ func main() {
 	r.POST("/sale-report", services.GenSaleReport)
 	r.POST("/purchase-report", services.GenPurchaseReport)
 
-	r.Run()
+	r.Run(":8080")
 
 }
 

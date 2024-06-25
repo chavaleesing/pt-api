@@ -1,9 +1,9 @@
 package services
 
 import (
-	"net/http"
-
+	"bytes"
 	"math/rand"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 
@@ -74,17 +74,27 @@ func GenSaleReport(c *gin.Context) {
 
 	println(result)
 
-	genExcel(result, saleData)
+	file := genExcel(result, saleData)
 
-	println(slipTotal)
-	c.JSON(http.StatusOK, gin.H{
-		"status":       "OK",
-		"date":         saleData.Date,
-		"total_amount": saleData.TotalAmount,
-	})
+	var buf bytes.Buffer
+	if err := file.Write(&buf); err != nil {
+		c.String(http.StatusInternalServerError, "failed to write Excel file")
+		return
+	}
+	// Set headers for file download
+	c.Header("Content-Description", "File Transfer")
+	c.Header("Content-Disposition", "attachment; filename=example.xlsx")
+	c.Data(http.StatusOK, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", buf.Bytes())
+
+	// println(slipTotal)
+	// c.JSON(http.StatusOK, gin.H{
+	// 	"status":       "OK",
+	// 	"date":         saleData.Date,
+	// 	"total_amount": saleData.TotalAmount,
+	// })
 }
 
-func genExcel(result []int, saleData MonthlySaleData) {
+func genExcel(result []int, saleData MonthlySaleData) *excelize.File {
 	file := excelize.NewFile()
 	startDate, _ := time.Parse("2006-01-02", saleData.Date)
 	style, _ := file.NewStyle(&excelize.Style{NumFmt: 3})
@@ -108,7 +118,9 @@ func genExcel(result []int, saleData MonthlySaleData) {
 		colNumber++
 		headers = headers.AddDate(0, 0, 1)
 	}
-	file.SaveAs("sale_report.xlsx")
+	return file
+
+	// file.SaveAs("sale_report.xlsx")
 }
 
 func getColumnName(col int) string {

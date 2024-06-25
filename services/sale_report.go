@@ -14,7 +14,7 @@ import (
 )
 
 type MonthlySaleData struct {
-	Date        string `json:"date"` // "2021-02-01"
+	Date        string `json:"date"` // format "2021-02-01"
 	TotalAmount int    `json:"total_amount"`
 	SlipCount   []int  `json:"slip_count"`
 }

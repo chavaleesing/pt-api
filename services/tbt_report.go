@@ -108,14 +108,6 @@ func genExcelTbt(resultTax []int, resultUntax []int, tbtData TbtData) *excelize.
 		startDate = startDate.AddDate(0, 0, 1)
 		temp_count = temp_count + 2
 	}
-	// style, _ := file.NewStyle(&excelize.Style{NumFmt: 3})
-	// file.SetCellStyle("Sheet1", "C1", "C65", style)
-	// file.SetCellStyle("Sheet1", "D1", "D65", style)
-
-	// file.SetColWidth("Sheet1", "A1", "A65", 20)
-	// file.SetColWidth("Sheet1", "B1", "B65", 25)
-	// file.SetColWidth("Sheet1", "C1", "C65", 25)
-	// file.SetColWidth("Sheet1", "D1", "D65", 25)
 
 	return file
 

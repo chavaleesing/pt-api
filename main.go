@@ -14,6 +14,13 @@ import (
 func main() {
 	r := gin.New()
 
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"}, // Specify allowed origin(s)
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		AllowCredentials: true,
+	}))
+
 	// Apply CORS middleware
 	r.Use(cors.Default())
 

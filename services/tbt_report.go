@@ -18,7 +18,6 @@ type TbtData struct {
 }
 
 func GenPurchaseReport(c *gin.Context) {
-	print("WIP")
 	tbtData := TbtData{}
 	c.ShouldBindJSON(&tbtData)
 

@@ -95,6 +95,7 @@ func genExcel(result []int, saleData MonthlySaleData) *excelize.File {
 	file := excelize.NewFile()
 	startDate, _ := time.Parse("2006-01-02", saleData.Date)
 	style, _ := file.NewStyle(&excelize.Style{NumFmt: 3})
+	style2, _ := file.NewStyle(&excelize.Style{NumFmt: 4})
 	headers := startDate
 
 	tempIdResult := 0
@@ -107,6 +108,7 @@ func genExcel(result []int, saleData MonthlySaleData) *excelize.File {
 		itemPerDay := saleData.SlipCount[i]
 		rowNumber := 2
 		for i := 0; i < itemPerDay; i++ {
+			file.SetCellStyle("Sheet1", colName+fmt.Sprint(rowNumber), colName+fmt.Sprint(rowNumber), style2)
 			file.SetCellValue("Sheet1", colName+fmt.Sprint(rowNumber), result[tempIdResult])
 			rowNumber++
 			tempIdResult++

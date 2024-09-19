@@ -29,6 +29,7 @@ func main() {
 	r.GET("/healthcheck", Healthcheck)
 	r.POST("/sale-report", services.GenSaleReport)
 	r.POST("/purchase-report", services.GenPurchaseReport)
+	r.POST("/sale-report2", services.GenSaleReport2)
 
 	r.Run(":8080")
 

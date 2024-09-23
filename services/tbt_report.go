@@ -55,8 +55,8 @@ func RandInt(sum int, dayCount int) []int {
 		remain = remain - randomNumber
 	}
 
-	advance_base := int(remain / 200)
-	advance_base_min := int(float32(advance_base) * 0.7)
+	advance_base := int(remain/200) + 1
+	advance_base_min := int(float32(advance_base)*0.7) + 1
 
 	numbers := []int{0, 1, 2, dayCount - 3, dayCount - 2, dayCount - 1}
 
